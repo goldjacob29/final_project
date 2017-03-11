@@ -1,0 +1,40 @@
+<div class="page-header">
+  <h3>Song Instance #<%= @song_instance.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Song</dt>
+      <dd>
+        <% if @song_instance.song.present? %>
+          <a href="/songs/<%= @song_instance.song_id %>">
+            <%= @song_instance.song.name %>
+          </a>
+        <% end %>
+      </dd>
+
+      <dt>Playlist</dt>
+      <dd>
+        <% if @song_instance.playlist.present? %>
+          <a href="/playlists/<%= @song_instance.playlist_id %>">
+            <%= @song_instance.playlist.name %>
+          </a>
+        <% end %>
+      </dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/song_instances" class="btn btn-primary">
+        Back
+      </a>
+      <a href="/song_instances/<%= @song_instance.id %>/edit" class="btn btn-warning">
+        Edit
+      </a>
+      <a href="/delete_song_instance/<%= @song_instance.id %>" class="btn btn-danger" rel="nofollow">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>

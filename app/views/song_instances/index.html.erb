@@ -1,0 +1,43 @@
+<div class="page-header">
+  <h1>
+    Song instances
+    <a href="/song_instances/new" class="btn btn-lg btn-success">New Song instance</a>
+  </h1>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped table-hover">
+      <tr>
+        <th>Song</th>
+        <th>Playlist</th>
+        <th>Actions</th>
+      </tr>
+
+      <% @song_instances.each do |song_instance| %>
+      <tr>
+        <td>
+          <% if song_instance.song.present? %>
+            <a href="/songs/<%= song_instance.song.id %>">
+              <%= song_instance.song.name %>
+            </a>
+          <% end %>
+        </td>
+        <td>
+          <% if song_instance.playlist.present? %>
+            <a href="/playlists/<%= song_instance.playlist.id %>">
+              <%= song_instance.playlist.name %>
+            </a>
+          <% end %>
+        </td>
+        <td>
+          <a href="/song_instances/<%= song_instance.id %>" class="btn btn-primary">Show</a>
+          <a href="/song_instances/<%= song_instance.id %>/edit" class="btn btn-warning">Edit</a>
+          <a href="/delete_song_instance/<%= song_instance.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+    <%= paginate @song_instances, theme: 'twitter-bootstrap-4' %>
+  </div>
+</div>

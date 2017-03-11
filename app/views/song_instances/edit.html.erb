@@ -1,0 +1,46 @@
+<!-- Validation failure messages -->
+<% if @song_instance.errors.any? %>
+  <% @song_instance.errors.full_messages.each do |message| %>
+    <div class="alert alert-dismissable alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h3>Edit Song Instance #<%= @song_instance.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/update_song_instance/<%= @song_instance.id %>" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for song_id -->
+      <div class="form-group">
+        <label for="song_id" class="control-label">
+          Song
+        </label>
+
+        <%= select_tag(:song_id, options_from_collection_for_select(Song.all, :id, :name, @song_instance.song_id), :class => "form-control") %>
+      </div>
+
+      <!-- Label and input for playlist_id -->
+      <div class="form-group">
+        <label for="playlist_id" class="control-label">
+          Playlist
+        </label>
+
+        <%= select_tag(:playlist_id, options_from_collection_for_select(Playlist.all, :id, :name, @song_instance.playlist_id), :class => "form-control") %>
+      </div>
+
+      <button class="btn btn-warning">
+        Update Song Instance
+      </button>
+      or
+      <a href="/song_instances/<%= @song_instance.id %>">Cancel</a>
+    </form>
+  </div>
+</div>
