@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+
   root :to => "users#current"
 
   get "/artists", :controller => "users", :action => "artist_dummy"
