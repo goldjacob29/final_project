@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   def index
-    @users = User.page(params[:page]).per(10)
+    if search = params[:search]
+      @users = User.where('username LIKE ? OR email LIKE ?', "%#{search}%", "%#{search}%").page(params[:page]).per(10)
+    else
+      @users = User.page(params[:page]).per(10)
+    end
   end
 
   def show

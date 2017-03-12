@@ -16,6 +16,6 @@ class Song < ApplicationRecord
 
   validates :name, :presence => true
 
-  validates :year, :presence => true
+  validates :year, :presence => true, :numericality => {:greater_than => 1000, :less_than => 2018}
 
 end
