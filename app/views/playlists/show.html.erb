@@ -11,17 +11,21 @@
   <h5>By <%= @playlist.user.username %></h5>
   <% end %>
 
+  <div>
+    <% if @playlist.description != "" %>
+    <h4>Description:</h4>
+    <%= @playlist.description %>
+    <% end %>
+  </div>
+
 
 </div>
 
-<div>
-  <% if @playlist.description != "" %>
-  <h4>Description:</h4>
-  <%= @playlist.description %>
-  <% end %>
-</div>
 
+
+<% if is_my_playlist %>
 <a href = "/songs/new/<%= @playlist.id %>">Add Song</a>
+<% end %>
 
 <!-- A Playlist has many song_instances -->
 
