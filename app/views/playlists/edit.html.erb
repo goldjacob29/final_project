@@ -38,6 +38,7 @@
 
         <textarea id="description" name="description" placeholder="Description" class="form-control" rows="3"><%= @playlist.description %></textarea>
       </div>
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
 
 
       <button class="btn btn-warning">

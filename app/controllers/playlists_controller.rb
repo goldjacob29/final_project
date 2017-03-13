@@ -8,10 +8,10 @@ class PlaylistsController < ApplicationController
       redirect_to :back, :alert => "You are not authorized for that."
     end
   end
-
   def index
     @q = current_user.playlists.ransack(params[:q])
-      @playlists = @q.result(:distinct => true).includes(:user, :song_instances).page(params[:page]).per(10)
+    playlists = @q.result(:distinct => true).includes(:user, :song_instances).page(params[:page]).per(10)
+    @playlists = Playlist.page(params[:page]).per(10)
 
     render("playlists/index.html.erb")
   end

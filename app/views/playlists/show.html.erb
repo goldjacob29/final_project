@@ -6,6 +6,7 @@
 
   <% if is_my_playlist %>
   <h5>This is your playlist.</h5>
+  <a href="/playlists/<%= @playlist.id %>/edit" class="btn btn-warning">Edit</a>
   <% else %>
   <h5>By <%= @playlist.user.username %></h5>
   <% end %>

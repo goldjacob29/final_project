@@ -54,13 +54,9 @@ Search for a User by Username or Email:
 <% if is_following or is_my_page %>
 
 
-
-
-
-
 <div class="row">
   <div class="col-md-12">
-    <% if @user.playlists.count > 0 %>
+
     <ul class="list-group">
       <li class="list-group-item list-group-item-info">
         <% if is_my_page %>
@@ -70,7 +66,8 @@ Search for a User by Username or Email:
         <%= @user.username %>'s Playlists
         <% end %>
       </li>
-
+      <% has_playlists = @user.playlists.count > 0 %>
+      <% if has_playlists %>
       <% @user.playlists.each do |playlist| %>
       <li class="list-group-item">
         <a href="/playlists/<%= playlist.id %>">
@@ -85,12 +82,12 @@ Search for a User by Username or Email:
             <i class="fa fa-trash-o"></i>
           </a>
           <% end %>
+          <% end %>
 
         </div>
-        <% end %>
+
 
       </li>
-
 
 
       <% end %>
