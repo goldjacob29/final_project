@@ -1,12 +1,19 @@
 <div class="page-header">
+
+  <% is_my_playlist = @playlist.user_id == current_user.id %>
+
   <h3><%= @playlist.name %></h3>
 
-  <% if is_my_playlist = @playlist.user_id == current_user.id %>
+  <% if is_my_playlist %>
   <h5>This is your playlist.</h5>
   <% else %>
   <h5>By <%= @playlist.user.username %></h5>
   <% end %>
+
+
 </div>
+
+
 
 <div>
   <% if @playlist.description != "" %>
@@ -23,7 +30,7 @@
     <ul class="list-group">
       <table class="table table-striped table-hover">
 
-        <% if @playlist.song_instances.count != 0 %>
+        <% if @playlist.song_instances.count > 0 %>
         <tr>
           <th>#</th>
           <th>Title</th>

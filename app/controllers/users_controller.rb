@@ -14,6 +14,12 @@ class UsersController < ApplicationController
     render("index")
   end
 
+  def followers_index
+    @which_page = "followers"
+    @users = current_user.followers.page(params[:page]).per(10)
+    render("index")
+  end
+
   def show
     @user = User.find(params[:id])
   end

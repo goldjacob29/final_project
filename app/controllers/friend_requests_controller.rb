@@ -42,7 +42,7 @@ class FriendRequestsController < ApplicationController
       when "/friend_requests/new", "/create_friend_request"
         redirect_to("/friend_requests")
       else
-        redirect_back(:fallback_location => "/", :notice => "Friend request created successfully.")
+        redirect_back(:fallback_location => "/", :notice => "You are now following #{@friend_request.recipient.username}.")
       end
     else
       render("friend_requests/new.html.erb")
@@ -55,37 +55,38 @@ class FriendRequestsController < ApplicationController
     render("friend_requests/edit.html.erb")
   end
 
-  def update
-    @friend_request = FriendRequest.find(params[:id])
-
-    @friend_request.sender_id = params[:sender_id]
-    @friend_request.recipient_id = params[:recipient_id]
-
-    save_status = @friend_request.save
-
-    if save_status == true
-      referer = URI(request.referer).path
-
-      case referer
-      when "/friend_requests/#{@friend_request.id}/edit", "/update_friend_request"
-        redirect_to("/friend_requests/#{@friend_request.id}", :notice => "Friend request updated successfully.")
-      else
-        redirect_back(:fallback_location => "/", :notice => "Friend request updated successfully.")
-      end
-    else
-      render("friend_requests/edit.html.erb")
-    end
-  end
+  # def update
+  #   @friend_request = FriendRequest.find(params[:id])
+  #
+  #   @friend_request.sender_id = params[:sender_id]
+  #   @friend_request.recipient_id = params[:recipient_id]
+  #
+  #   save_status = @friend_request.save
+  #
+  #   if save_status == true
+  #     referer = URI(request.referer).path
+  #
+  #     case referer
+  #     when "/friend_requests/#{@friend_request.id}/edit", "/update_friend_request"
+  #       redirect_to("/friend_requests/#{@friend_request.id}", :notice => "Friend request updated successfully.")
+  #     else
+  #       redirect_back(:fallback_location => "/", :notice => "Friend request updated successfully.")
+  #     end
+  #   else
+  #     render("friend_requests/edit.html.erb")
+  #   end
+  # end
 
   def destroy
     @friend_request = FriendRequest.find(params[:id])
 
+    name = @friend_request.recipient.username
     @friend_request.destroy
 
     if URI(request.referer).path == "/friend_requests/#{@friend_request.id}"
       redirect_to("/", :notice => "Friend request deleted.")
     else
-      redirect_back(:fallback_location => "/", :notice => "Friend request deleted.")
+      redirect_back(:fallback_location => "/", :notice => "You are no longer following #{name}.")
     end
   end
 end

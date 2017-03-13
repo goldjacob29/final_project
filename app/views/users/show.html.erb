@@ -1,15 +1,26 @@
 <div class="page-header">
-  <% if (is_my_page = current_user == @user) == false %>
+
+  <% is_my_page = current_user == @user %>
+  <% if !is_my_page %>
   <h3><%= @user.username %></h3>
   <% else %>
   <h3>My Page</h3>
   <% end %>
 
-  <% if !is_my_page  %>
-  <% if (following = FriendRequest.find_by(sender_id: current_user.id, recipient_id: @user.id)) != nil %>
-  <a href="/delete_friend_request/<%= following.id %>">
-    <i class="fa fa-user-times" aria-hidden="true"></i>
-  </a>
+  <% following = FriendRequest.find_by(sender_id: current_user.id, recipient_id: @user.id) %>
+  <% is_following = (following != nil) %>
+  <% if !is_my_page %>
+
+
+
+  <% if is_following %>
+  <form action="/delete_friend_request/<%= following.id %>" method="get">
+    <button class="btn btn-link">
+      <i class="fa fa-user-times" aria-hidden="true"></i>
+    </button>
+  </form>
+  Unfollow
+
 
   <% else %>
   <form action="/create_friend_request" method="post">
@@ -38,14 +49,18 @@ Search for a User by Username or Email:
 <% end %>
 
 
-
 <!-- A User has many playlists -->
 
-<% if following || is_my_page %>
-<% @user.playlists.each do |playlist| %>
+<% if is_following or is_my_page %>
+
+
+
+
+
 
 <div class="row">
   <div class="col-md-12">
+    <% if @user.playlists.count > 0 %>
     <ul class="list-group">
       <li class="list-group-item list-group-item-info">
         <% if is_my_page %>
@@ -56,7 +71,7 @@ Search for a User by Username or Email:
         <% end %>
       </li>
 
-
+      <% @user.playlists.each do |playlist| %>
       <li class="list-group-item">
         <a href="/playlists/<%= playlist.id %>">
           <%= playlist.name %>
@@ -78,7 +93,7 @@ Search for a User by Username or Email:
 
 
 
-
+      <% end %>
     </ul>
   </div>
 </div>
@@ -192,6 +207,4 @@ Friend Requests Received
 
 
 </div>
-<% else %>
-You do not follow <%= @user.username %>.
 <% end %>
