@@ -1,7 +1,7 @@
 <div class="page-header">
   <h3><%= @playlist.name %></h3>
 
-  <% if @playlist.user_id == current_user.id %>
+  <% if is_my_playlist = @playlist.user_id == current_user.id %>
   <h5>This is your playlist.</h5>
   <% else %>
   <h5>By <%= @playlist.user.username %></h5>
@@ -11,8 +11,8 @@
 <div>
   <% if @playlist.description != "" %>
   <h4>Description:</h4>
-<%= @playlist.description %>
-<% end %>
+  <%= @playlist.description %>
+  <% end %>
 </div>
 
 
@@ -30,66 +30,71 @@
           <th>Artist</th>
           <th>Genre</th>
           <th>Year</th>
+          <% if is_my_playlist %>
           <th>Remove Song</th>
+          <% end %>
         </tr>
         <% end %>
 
-      <% count = 1 %>
+        <% count = 1 %>
 
-      <% @playlist.song_instances.each do |song_instance| %>
-      <% song = song_instance.song %>
-      <tr>
-        <td><%= count %></td>
-        <% count+=1 %>
-        <td>
-          <a href="/songs/<%= song.id %>">
-            <%= song.name %>
-          </a>
-        </td>
-        <td>
-          <%= song.artist %>
-        </td>
-        <td>
-          <%= song.genre %>
-        </td>
-        <td>
-          <%= song.year %>
-        </td>
-
-        <td>
-          <div class="btn-group btn-group-xs">
-            <a href="/delete_song_instance/<%= song_instance.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
+        <% @playlist.song_instances.each do |song_instance| %>
+        <% song = song_instance.song %>
+        <tr>
+          <td><%= count %></td>
+          <% count+=1 %>
+          <td>
+            <a href="/songs/<%= song.id %>">
+              <%= song.name %>
             </a>
+          </td>
+          <td>
+            <%= song.artist %>
+          </td>
+          <td>
+            <%= song.genre %>
+          </td>
+          <td>
+            <%= song.year %>
+          </td>
+
+
+          <% if is_my_playlist %>
+          <td>
+            <div class="btn-group btn-group-xs">
+              <a href="/delete_song_instance/<%= song_instance.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            </div>
+          </td>
+          <% end %>
+
+          <% end %>
+        </tr>
+      </table>
+
+      <li class="list-group-item">
+        <form action="/create_song_instance" method="post">
+          <!-- Hidden input for authenticity token to protect from forgery -->
+          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+          <!-- Label and input for song_id -->
+          <div class="form-group">
+            <label for="song_id" class="control-label">
+              Song
+            </label>
+
+            <%= select_tag(:song_id, options_from_collection_for_select(Song.all, :id, :name), :class => "form-control") %>
           </div>
-        </td>
 
-        <% end %>
-      </tr>
-    </table>
+          <!-- Label and input for playlist_id -->
+          <input type="hidden" name="playlist_id" value="<%= @playlist.id %>">
 
-    <li class="list-group-item">
-      <form action="/create_song_instance" method="post">
-        <!-- Hidden input for authenticity token to protect from forgery -->
-        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-
-        <!-- Label and input for song_id -->
-        <div class="form-group">
-          <label for="song_id" class="control-label">
-            Song
-          </label>
-
-          <%= select_tag(:song_id, options_from_collection_for_select(Song.all, :id, :name), :class => "form-control") %>
-        </div>
-
-        <!-- Label and input for playlist_id -->
-        <input type="hidden" name="playlist_id" value="<%= @playlist.id %>">
-
-        <button class="btn btn-block btn-success">
-          Create Song Instance
-        </button>
-      </form>
-    </li>
-  </ul>
-</div>
+          <button class="btn btn-block btn-success">
+            Create Song Instance
+          </button>
+        </form>
+      </li>
+    </ul>
+  </div>
 </div>

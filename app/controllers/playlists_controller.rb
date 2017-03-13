@@ -1,5 +1,5 @@
 class PlaylistsController < ApplicationController
-  before_action :current_user_must_be_playlist_user, :only => [:show, :edit, :update, :destroy]
+  before_action :current_user_must_be_playlist_user, :only => [:edit, :update, :destroy]
 
   def current_user_must_be_playlist_user
     playlist = Playlist.find(params[:id])

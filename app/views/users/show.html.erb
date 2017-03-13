@@ -1,16 +1,16 @@
 <div class="page-header">
-  <% if (owns_page = current_user == @user) == false %>
+  <% if (is_my_page = current_user == @user) == false %>
   <h3><%= @user.username %></h3>
   <% else %>
   <h3>My Page</h3>
   <% end %>
 
-  <% is_my_page = current_user == @user%>
   <% if !is_my_page  %>
   <% if (following = FriendRequest.find_by(sender_id: current_user.id, recipient_id: @user.id)) != nil %>
   <a href="/delete_friend_request/<%= following.id %>">
-    Unfollow
+    <i class="fa fa-user-times" aria-hidden="true"></i>
   </a>
+
   <% else %>
   <form action="/create_friend_request" method="post">
     <button class="btn btn-link">
@@ -25,12 +25,24 @@
   <% end %>
 </div>
 
-<%= render "form_artist" %>
+<!-- <%= render "form_artist" %> -->
+
+<% if is_my_page %>
+Search for a User by Username or Email:
+<%= form_tag users_path, :method => "get" do %>
+<p>
+  <%= text_field_tag :search, params[:search] %>
+  <%= submit_tag "Search", name: nil %>
+</p>
+<% end %>
+<% end %>
 
 
 
 <!-- A User has many playlists -->
 
+<% if following || is_my_page %>
+<% @user.playlists.each do |playlist| %>
 
 <div class="row">
   <div class="col-md-12">
@@ -38,25 +50,18 @@
       <li class="list-group-item list-group-item-info">
         <% if is_my_page %>
         My Playlists
+        <a href="/playlists/new" class="btn btn-md btn-success">Create New</a>
         <% else %>
         <%= @user.username %>'s Playlists
         <% end %>
-        <a href="/playlists/new" class="btn btn-md btn-success">Create New</a>
       </li>
 
-
-
-      <% if following || is_my_page %>
-      <% @user.playlists.each do |playlist| %>
 
       <li class="list-group-item">
         <a href="/playlists/<%= playlist.id %>">
           <%= playlist.name %>
         </a>
         <div class="btn-group btn-group-xs pull-right">
-          <a href="/playlists/<%= playlist.id %>" class="btn btn-primary">
-            <i class="fa fa-search-plus"></i>
-          </a>
           <%if current_user == playlist.user %>
           <a href="/playlists/<%= playlist.id %>/edit" class="btn btn-warning">
             <i class="fa fa-edit"></i>
@@ -68,13 +73,12 @@
 
         </div>
         <% end %>
-        <% else %>
-        You do not follow <%= @user.username %>.
+
       </li>
 
 
 
-      <% end %>
+
     </ul>
   </div>
 </div>
@@ -144,47 +148,11 @@ Friend Requests Received
 </ul>
 </div>
 </div> -->
-Search for a User by Username or Email:
-<%= form_tag users_path, :method => "get" do %>
-<p>
-  <%= text_field_tag :search, params[:search] %>
-  <%= submit_tag "Search", name: nil %>
-</p>
-<% end %>
 
 <!-- A User has many following -->
 
+
 <div class="row">
-  <div class="col-md-6">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Following
-      </li>
-
-      <% @user.following.each do |user| %>
-      <li class="list-group-item">
-        <a href="/users/<%= user.id %>">
-          <%= user.username %>
-        </a>
-        <div class="btn-group btn-group-xs pull-right">
-          <a href="/users/<%= user.id %>" class="btn btn-primary">
-            <i class="fa fa-search-plus"></i>
-          </a>
-          <a href="/users/<%= user.id %>/edit" class="btn btn-warning">
-            <i class="fa fa-edit"></i>
-          </a>
-          <a href="/delete_user/<%= user.id %>" class="btn btn-danger" rel="nofollow">
-            <i class="fa fa-trash-o"></i>
-          </a>
-        </div>
-      </li>
-      <% end %>
-    </ul>
-  </div>
-
-
-  <!-- A User has many followers -->
-
   <div class="col-md-6">
     <ul class="list-group">
       <li class="list-group-item list-group-item-info">
@@ -196,19 +164,34 @@ Search for a User by Username or Email:
         <a href="/users/<%= user.id %>">
           <%= user.username %>
         </a>
-        <div class="btn-group btn-group-xs pull-right">
-          <a href="/users/<%= user.id %>" class="btn btn-primary">
-            <i class="fa fa-search-plus"></i>
-          </a>
-          <a href="/users/<%= user.id %>/edit" class="btn btn-warning">
-            <i class="fa fa-edit"></i>
-          </a>
-          <a href="/delete_user/<%= user.id %>" class="btn btn-danger" rel="nofollow">
-            <i class="fa fa-trash-o"></i>
-          </a>
-        </div>
+      </li>
+      <% end %>
+    </ul>
+
+  </div>
+
+
+  <div class="col-md-6">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        Following
+      </li>
+
+      <% @user.following.each do |user| %>
+      <li class="list-group-item">
+        <a href="/users/<%= user.id %>">
+          <%= user.username %>
+        </a>
       </li>
       <% end %>
     </ul>
   </div>
+
+
+  <!-- A User has many followers -->
+
+
 </div>
+<% else %>
+You do not follow <%= @user.username %>.
+<% end %>
