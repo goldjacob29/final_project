@@ -29,14 +29,20 @@ class SongsController < ApplicationController
 
     save_status = @song.save
 
+    song_instance = SongInstance.new
+    song_instance.song_id = @song.id
+    song_instance.playlist_id = params[:playlist_id]
+
+    song_instance.save
+
     if save_status == true
       referer = URI(request.referer).path
 
       case referer
       when "/songs/new", "/create_song"
-        redirect_to("/songs")
+        redirect_to("/playlists/#{params[:playlist_id]}")
       else
-        redirect_back(:fallback_location => "/", :notice => "Song created successfully.")
+        redirect_to("/playlists/#{params[:playlist_id]}", :notice => "Song created successfully.")
       end
     else
       render("songs/new.html.erb")

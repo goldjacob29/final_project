@@ -26,12 +26,12 @@ Rails.application.routes.draw do
 
   # Routes for the Song resource:
   # CREATE
-  get "/songs/new", :controller => "songs", :action => "new"
+  get "/songs/new/:playlist_id", :controller => "songs", :action => "new"
   post "/create_song", :controller => "songs", :action => "create"
 
   # READ
   get "/songs", :controller => "songs", :action => "index"
-  get "/songs/:id", :controller => "songs", :action => "show"
+  get "/songs/:id/:playlist_id", :controller => "songs", :action => "show"
 
   # UPDATE
   get "/songs/:id/edit", :controller => "songs", :action => "edit"

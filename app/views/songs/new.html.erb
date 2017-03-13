@@ -12,11 +12,13 @@
   <h3>Add Song</h3>
 </div>
 
+
 <div class="row">
   <div class="col-md-12">
     <form action="/create_song" method="post">
       <!-- Hidden input for authenticity token to protect from forgery -->
       <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+      <input name="playlist_id" type="hidden" value="<%= params[:playlist_id] %>">
 
       <!-- Label and input for name -->
       <div class="form-group">

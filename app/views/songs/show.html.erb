@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h3>Song #<%= @song.id %></h3>
+  <h3><%= @song.name %></h3>
 </div>
 
 <div class="row">
@@ -20,69 +20,9 @@
     </dl>
 
     <div class="btn-group btn-group-justified">
-      <a href="/songs" class="btn btn-primary">
+      <a href="/playlists/<%= params[:playlist_id] %>" class="btn btn-primary">
         Back
       </a>
-      <a href="/songs/<%= @song.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_song/<%= @song.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
     </div>
-  </div>
-</div>
-
-<!-- A Song has many song_instances -->
-
-<div class="row">
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Song Instances
-      </li>
-
-      <% @song.song_instances.each do |song_instance| %>
-        <li class="list-group-item">
-          <a href="/song_instances/<%= song_instance.id %>">
-            <%= song_instance.song_id %>
-          </a>
-          <div class="btn-group btn-group-xs pull-right">
-            <a href="/song_instances/<%= song_instance.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/song_instances/<%= song_instance.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_song_instance/<%= song_instance.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
-        </li>
-      <% end %>
-
-      <li class="list-group-item">
-        <form action="/create_song_instance" method="post">
-      <!-- Hidden input for authenticity token to protect from forgery -->
-      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-
-      <!-- Label and input for song_id -->
-      <input type="hidden" name="song_id" value="<%= @song.id %>">
-
-      <!-- Label and input for playlist_id -->
-      <div class="form-group">
-        <label for="playlist_id" class="control-label">
-          Playlist
-        </label>
-
-        <%= select_tag(:playlist_id, options_from_collection_for_select(Playlist.all, :id, :name), :class => "form-control") %>
-      </div>
-
-      <button class="btn btn-block btn-success">
-        Create Song Instance
-      </button>
-    </form>
-      </li>
-    </ul>
   </div>
 </div>

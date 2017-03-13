@@ -14,8 +14,6 @@
 
 </div>
 
-
-
 <div>
   <% if @playlist.description != "" %>
   <h4>Description:</h4>
@@ -23,6 +21,7 @@
   <% end %>
 </div>
 
+<a href = "/songs/new/<%= @playlist.id %>">Add Song</a>
 
 <!-- A Playlist has many song_instances -->
 
@@ -42,17 +41,19 @@
           <th>Remove Song</th>
           <% end %>
         </tr>
-        <% end %>
 
         <% count = 1 %>
 
+
+
         <% @playlist.song_instances.each do |song_instance| %>
+        <% if song_instance.song %>
         <% song = song_instance.song %>
         <tr>
           <td><%= count %></td>
           <% count+=1 %>
           <td>
-            <a href="/songs/<%= song.id %>">
+            <a href="/songs/<%= song.id %>/<%= @playlist.id %>">
               <%= song.name %>
             </a>
           </td>
@@ -66,7 +67,6 @@
             <%= song.year %>
           </td>
 
-
           <% if is_my_playlist %>
           <td>
             <div class="btn-group btn-group-xs">
@@ -76,33 +76,13 @@
             </div>
           </td>
           <% end %>
-
+          <% end %>
+          <% end %>
           <% end %>
         </tr>
       </table>
 
-      <li class="list-group-item">
-        <form action="/create_song_instance" method="post">
-          <!-- Hidden input for authenticity token to protect from forgery -->
-          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
-          <!-- Label and input for song_id -->
-          <div class="form-group">
-            <label for="song_id" class="control-label">
-              Song
-            </label>
-
-            <%= select_tag(:song_id, options_from_collection_for_select(Song.all, :id, :name), :class => "form-control") %>
-          </div>
-
-          <!-- Label and input for playlist_id -->
-          <input type="hidden" name="playlist_id" value="<%= @playlist.id %>">
-
-          <button class="btn btn-block btn-success">
-            Create Song Instance
-          </button>
-        </form>
-      </li>
     </ul>
   </div>
 </div>
