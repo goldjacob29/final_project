@@ -36,8 +36,6 @@
   <% end %>
 </div>
 
-<!-- <%= render "form_artist" %> -->
-
 <% if is_my_page %>
 Search for a User by Username or Email:
 <%= form_tag users_path, :method => "get" do %>
@@ -49,51 +47,7 @@ Search for a User by Username or Email:
 <% end %>
 
 
-<!-- A User has many playlists -->
 
-<% if is_following or is_my_page %>
-
-
-<div class="row">
-  <div class="col-md-12">
-
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        <% if is_my_page %>
-        My Playlists
-        <a href="/playlists/new" class="btn btn-md btn-success">Create New</a>
-        <% else %>
-        <%= @user.username %>'s Playlists
-        <% end %>
-      </li>
-      <% has_playlists = @user.playlists.count > 0 %>
-      <% if has_playlists %>
-      <% @user.playlists.each do |playlist| %>
-      <li class="list-group-item">
-        <a href="/playlists/<%= playlist.id %>">
-          <%= playlist.name %>
-        </a>
-        <div class="btn-group btn-group-xs pull-right">
-          <%if current_user == playlist.user %>
-          <a href="/playlists/<%= playlist.id %>/edit" class="btn btn-warning">
-            <i class="fa fa-edit"></i>
-          </a>
-          <a href="/delete_playlist/<%= playlist.id %>" class="btn btn-danger" rel="nofollow">
-            <i class="fa fa-trash-o"></i>
-          </a>
-          <% end %>
-          <% end %>
-
-        </div>
-
-
-      </li>
-
-
-      <% end %>
-    </ul>
-  </div>
-</div>
 
 <!-- A User has many friend_requests_sent -->
 
@@ -203,5 +157,52 @@ Friend Requests Received
   <!-- A User has many followers -->
 
 
+</div>
+
+
+<!-- A User has many playlists -->
+
+<% if is_following or is_my_page %>
+
+
+<div class="row">
+  <div class="col-md-12">
+
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-info">
+        <% if is_my_page %>
+        My Playlists
+        <a href="/playlists/new" class="btn btn-md btn-success">Create New</a>
+        <% else %>
+        <%= @user.username %>'s Playlists
+        <% end %>
+      </li>
+      <% has_playlists = @user.playlists.count > 0 %>
+      <% if has_playlists %>
+      <% @user.playlists.each do |playlist| %>
+      <li class="list-group-item">
+        <a href="/playlists/<%= playlist.id %>">
+          <%= playlist.name %>
+        </a>
+        <div class="btn-group btn-group-xs pull-right">
+          <%if current_user == playlist.user %>
+          <a href="/playlists/<%= playlist.id %>/edit" class="btn btn-warning">
+            <i class="fa fa-edit"></i>
+          </a>
+          <a href="/delete_playlist/<%= playlist.id %>" class="btn btn-danger" rel="nofollow">
+            <i class="fa fa-trash-o"></i>
+          </a>
+          <% end %>
+          <% end %>
+
+        </div>
+
+
+      </li>
+
+
+      <% end %>
+    </ul>
+  </div>
 </div>
 <% end %>

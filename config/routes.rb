@@ -67,6 +67,7 @@ Rails.application.routes.draw do
   get "/playlists", :controller => "playlists", :action => "index"
   get "/playlists/:id", :controller => "playlists", :action => "show"
 
+
   # UPDATE
   get "/playlists/:id/edit", :controller => "playlists", :action => "edit"
   post "/update_playlist/:id", :controller => "playlists", :action => "update"
